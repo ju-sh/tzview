@@ -1,0 +1,6 @@
+[run]
+branch = true
+source = tzview
+omit =
+    */__main__.py
+    #src/tzview/__main__.py
