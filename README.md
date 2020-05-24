@@ -26,42 +26,40 @@ The string `'now'` can be used to specify the local datetime. This is the source
 
 <h3>Command line usage</h3>
 
+To get the current time at Tokyo relative to your computer's current time and time zone, use
+
+    python3 -m tzview Asia/Tokyo
+
+to get something like
+
+    2020-05-24 09:16:05.281238+09:00 : Asia/Tokyo
+
+You could provide source datetime using `--dt` option and source time zone with `--from-tz` option. Like
+
     python3 -m tzview --dt "2020-03-23 11:32:34" --from-tz Asia/Tokyo Europe/Oslo Asia/Istanbul
 
-would give
+to get an output like
 
     2020-03-23 03:32:34+01:00 : Europe/Oslo
     2020-03-23 05:32:34+03:00 : Asia/Istanbul
+
+Use `python3 -m tzview --help` for more.
 
 <h3>Usage as module</h3>
 
 The `tzview()` function can be used. It accepts the extension name as string.
 
-Return value would be a list of lists.
-
-Each sub-list corresponds to an entry related to that extension.
-
-It consists of two elements:
- - The type of file which use the extension
- - The kind of software capable of manipulating such a file
+Return value would be a list of timezone aware datetimes.
 
 For example,
 
-    from tzview import tzview
-    info = tzview("py")
-    print(info)
+    >>> from tzview import tzview
+    >>> t(['Europe/Oslo'])
+    [datetime.datetime(2020, 5, 24, 12, 6, 14, 272335, tzinfo=<DstTzInfo 'Europe/Oslo' CEST+2:00:00 DST>)]
 
-would give
+    >>> t(['Europe/Athens', 'Asia/Singapore'])
+    [datetime.datetime(2020, 5, 24, 13, 11, 7, 32042, tzinfo=<DstTzInfo 'Europe/Athens' EEST+3:00:00 DST>), datetime.datetime(2020, 5, 24, 18, 11, 7, 32042, tzinfo=<DstTzInfo 'Asia/Singapore' +08+8:00:00 STD>)]
 
-    [['Python script file', 'Python interpreter']]
-
-and
-
-    tzview("c")
-
-returns
-
-    [['C source file', 'C compilers'], ['Unix file archive', 'COMPACT']]
 
 <h2>Why</h2>
 

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="tzview",
-    version="0.1",
+    version="0.2",
     author="Julin S",
     author_email="julins@cannottellyou.yet",
     description="View datetime in different time zones.",
@@ -24,7 +24,7 @@ setuptools.setup(
         "Natural Language :: English",
     ],
     project_urls={
-        #'Changelog': 'https://github.com/user/project/CHANGELOG.rst',
+        'Changelog': 'https://github.com/ju-sh/tzview/CHANGELOG.md',
         'Issue Tracker': 'https://github.com/ju-sh/tzview/issues',
     },
     install_requires=['pytz', 'tzlocal'],

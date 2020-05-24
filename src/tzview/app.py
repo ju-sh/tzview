@@ -3,10 +3,9 @@ Command line interface for tzview
 """
 
 import argparse
-import pytz.exceptions
 import tzview
 
-__version__ = "0.1"
+__version__ = "0.2"
 __author__ = "Julin S"
 
 
@@ -40,25 +39,10 @@ def main(args: argparse.Namespace) -> int:
     """
 
     try:
-        # Find source datetime
-        dt = tzview.parse_dt(args.dt)
-
-        # Find source timezone
-        from_tz = tzview.parse_tz(args.from_tz)
-
-        # Find target timezones
-        to_tzs = []
-        for to_tz_str in args.to_tzs:
-            to_tz = tzview.parse_tz(to_tz_str)
-            to_tzs.append(to_tz)
-
         # Call tzview
-        to_dts = tzview.tzview(dt, from_tz, to_tzs)
-    except pytz.exceptions.UnknownTimeZoneError as utze:
-        print(f"Unknown timezone: {utze.args[0]}")
-        return 1
-    except ValueError:
-        print(f"Invalid datetime: {args.dt}!")
+        to_dts = tzview.tzview(args.to_tzs, args.from_tz, args.dt)
+    except ValueError as ve:
+        print(ve.args[0])
         return 1
     else:
         for to_dt in to_dts:
