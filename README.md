@@ -1,5 +1,9 @@
 # tzview
 
+<a href="https://pypi.org/project/tzview"><img alt="PyPI" src="https://img.shields.io/pypi/v/tzview"></a>
+<a href="https://travis-ci.com/ju-sh/tzview"><img alt="Build Status" src="https://api.travis-ci.com/ju-sh/tzview.svg?branch=master"></a>
+<a href="https://github.com/ju-sh/tzview/blob/master/LICENSE.md"><img alt="License: MIT" src="https://img.shields.io/pypi/l/tzview"></a>
+
 View datetime in different time zones.
 
 Given a time zone and datetime, tzview can find the datetime at other time zones.
