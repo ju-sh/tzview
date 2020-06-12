@@ -27,6 +27,6 @@ setuptools.setup(
         'Changelog': 'https://github.com/ju-sh/tzview/CHANGELOG.md',
         'Issue Tracker': 'https://github.com/ju-sh/tzview/issues',
     },
-    install_requires=['pytz', 'tzlocal'],
+    install_requires=['python-dateutil', 'pytz', 'tzlocal'],
     python_requires='>=3.6',
 )

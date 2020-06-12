@@ -1,12 +1,12 @@
 """
-Command line interface for tzview
+Command line interface for tzview.
 """
-
-import argparse
-import tzview
 
 __version__ = "0.2"
 __author__ = "Julin S"
+
+import argparse
+import tzview
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -18,7 +18,7 @@ def create_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="tzview",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
-        description="A tzview description for argparse"
+        description="View datetime in different time zones"
     )
     parser.add_argument(
         '--version',
@@ -37,7 +37,6 @@ def main(args: argparse.Namespace) -> int:
 
     Returns non-zero on error and zero on successful operation.
     """
-
     try:
         # Call tzview
         to_dts = tzview.tzview(args.to_tzs, args.from_tz, args.dt)

@@ -11,9 +11,10 @@ local means current timezone
 from typing import List
 import datetime
 
+import tzlocal
 import pytz
 import pytz.exceptions
-import tzlocal
+import dateutil.parser
 
 # Stuff for mypy
 # _pytz_tzinfo = Union[pytz.UTC.__class__,
@@ -34,7 +35,8 @@ def parse_dt(dt_str: str) -> datetime.datetime:
     if dt_str == 'now':
         dt = datetime.datetime.now()
     else:
-        dt = datetime.datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S")
+        #dt = datetime.datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S")
+        dt = dateutil.parser.parse(dt_str)
     return dt
 
 
