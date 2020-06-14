@@ -22,7 +22,7 @@ import dateutil.parser
 # _pytz_tzinfo = Union[pytz.tzinfo.StaticTzInfo, pytz.tzinfo.DstTzInfo]
 
 
-def parse_dt(dt_str: str) -> datetime.datetime:
+def parse_dt(dt_str: str, dt_format: str = None) -> datetime.datetime:
     """
     Convert datetime in string form to datetime object.
 
@@ -34,8 +34,9 @@ def parse_dt(dt_str: str) -> datetime.datetime:
     dt_str = dt_str.strip().lower()
     if dt_str == 'now':
         dt = datetime.datetime.now()
+    elif dt_format is not None:  # if a format is provided, use it
+        dt = datetime.datetime.strptime(dt_str, dt_format)
     else:
-        #dt = datetime.datetime.strptime(dt_str, "%Y-%m-%d %H:%M:%S")
         dt = dateutil.parser.parse(dt_str)
     return dt
 
@@ -57,7 +58,8 @@ def parse_tz(tz_str: str):
 
 def tzview(to_tz_strs: List[str],
            from_tz_str: str = 'local',
-           dt_str: str = 'now') -> List[datetime.datetime]:
+           dt_str: str = 'now',
+           dt_format: str = None) -> List[datetime.datetime]:
     """
     to_tzs: list of tzs to which dt should be converted.
     from_tz: the time zone in which dt is in
@@ -74,7 +76,7 @@ def tzview(to_tz_strs: List[str],
         from_tz = parse_tz(from_tz_str)
 
         # Find source datetime
-        dt = parse_dt(dt_str)
+        dt = parse_dt(dt_str, dt_format)
         from_dt = from_tz.localize(dt)
 
         # Find target timezone datetimes
@@ -87,6 +89,6 @@ def tzview(to_tz_strs: List[str],
     except pytz.exceptions.UnknownTimeZoneError as utze:
         raise ValueError(f"Unknown timezone: {utze.args[0]}")
     except ValueError:
-        raise ValueError(f"Invalid datetime: {dt_str}!")
+        raise ValueError(f"Could not recognize format of datetime : {dt_str}!")
 
     return to_dts

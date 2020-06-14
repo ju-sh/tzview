@@ -12,17 +12,22 @@ import tzview
 
 
 class TestParseDT:
-    @pytest.mark.parametrize('dt_str, expected', [
-        ("2019-02-28 11:23:42",
+    @pytest.mark.parametrize('dt_str, dt_format, expected', [
+        # Without dt_format
+        ("2019-02-28 11:23:42", None,
          datetime.datetime(2019, 2, 28, 11, 23, 42)),
-        ("May 2019 31",
+        ("May 2019 31", None,
+         datetime.datetime(2019, 5, 31, 0, 0, 0)),
+
+        # With dt_format
+        ("31 19 05", "%d %y %m",
          datetime.datetime(2019, 5, 31, 0, 0, 0)),
     ])
-    def test_valid(self, dt_str, expected):
+    def test_valid(self, dt_str, dt_format, expected):
         """
         Normal valid test cases
         """
-        assert tzview.parse_dt(dt_str) == expected
+        assert tzview.parse_dt(dt_str, dt_format) == expected
 
     def test_valid_now(self):
         """
@@ -75,35 +80,36 @@ class TestParseTZ:
 
 
 class TestTZView:
-    def test_tzview(self):
-        """
-        Valid test cases
-        """
-        dt_str = "2020-02-23 21:23:42"
-        from_tz = 'Europe/Oslo'
-        to_tzs = ['asia/dHaKa', 'America/Guayaquil']
-        expected = [(2, 23), (15, 23)]
-        rv = tzview.tzview(to_tzs, from_tz, dt_str)
-        for to_dt, (hour, minute) in zip(rv, expected):
-            assert to_dt.hour == hour
-            assert to_dt.minute == minute
+    @pytest.mark.parametrize('to_tzs, from_tz, dt_str, dt_format, expected', [
+       (['asia/dHaKa', 'America/Guayaquil'], 'Europe/Oslo',
+        "2020-02-23 21:23:42", None, [(2, 23), (15, 23)]),
 
-    def test_invalid_dt_str(self):
+       # With dt_format
+       (['asia/dHaKa', 'America/Guayaquil'], 'Europe/Oslo',
+        "2020-February-23 21:23:42", "%Y-%B-%d %H:%M:%S",
+        [(2, 23), (15, 23)]),
+    ])
+    def test_valid(self, to_tzs, from_tz, dt_str, dt_format, expected):
         """
-        Test cases that should raise exception due to invalid datetime
+        Valid usages
         """
-        dt_str = "2020-02-23 24:23:42"
-        from_tz = 'Europe/Oslo'
-        to_tzs = ['America/Guayaquil']
-        with pytest.raises(ValueError):
-            tzview.tzview(to_tzs, from_tz, dt_str)
+        rv = tzview.tzview(to_tzs, from_tz, dt_str, dt_format)
+        value = [(dt.hour, dt.minute) for dt in rv]
+        assert value == expected
 
-    def test_invalid_tz_str(self):
+    @pytest.mark.parametrize('dt_str, from_tz, to_tzs, dt_format', [
+        # Invalid dt_str
+        ("2020-02-23 24:23:42", 'Europe/Oslo', ['America/Guayaquil'], None),
+
+        # Unknown time zone name
+        ("2020-02-23 21:23:42", 'Australia/Oslo', ['America/Guayaquil'], None),
+
+        # Invalid dt_format
+        ("-230-02-23 24:23:42", 'Europe/Oslo', ['America/Guayaquil'], "%d-%B"),
+    ])
+    def test_invalid(self, dt_str, from_tz, to_tzs, dt_format):
         """
-        Test cases that should raise exception due to invalid tz name
+        Test cases that should raise exception
         """
-        dt_str = "2020-02-23 21:23:42"
-        from_tz = 'Europe/Olo'
-        to_tzs = ['Ameria/Guayaquil']
         with pytest.raises(ValueError):
             tzview.tzview(to_tzs, from_tz, dt_str)
