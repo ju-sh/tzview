@@ -1,8 +1,20 @@
+12-06-2020
+----------
+Version 0.3 released.
+
+ * Add option `--in-format` to specify the format in which `--dt` is provided.
+ * Add option `--out-format` to specify the format out of output datetimes.
+ * `--dt` option can now have datetimes of arbitrary format (courtesy of dateutil.parser).
+ * Parametrize some tests.
+
+
 24-05-2020
 ----------
 Version 0.2 released.
 
-Modify `tzview.tzview()` function from
+ * Modify `tzview.tzview()` function
+
+Change signature from
 
     def tzview(dt: datetime.datetime,
                from_tz: pytz.tzfile,

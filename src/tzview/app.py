@@ -29,7 +29,8 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument('--from-tz', dest='from_tz', default='local')
     parser.add_argument('to_tzs', nargs='+')
     parser.add_argument('--in-format', dest='in_format')
-    parser.add_argument('--out-format', dest='out_format')
+    parser.add_argument('--out-format', dest='out_format',
+                        default="+%I:%M %p, %d-%b-%Y")
     return parser
 
 
@@ -48,10 +49,6 @@ def main(args: argparse.Namespace) -> int:
         return 1
     else:
         for to_dt in to_dts:
-            if args.out_format is None:
-                zone_name = to_dt.tzinfo.zone  # type: ignore
-                out_str = to_dt.strftime(f'%H:%M:%S %d-%b-%Y: {zone_name}')
-            else:
-                out_str = to_dt.strftime(args.out_format)
+            out_str = to_dt.strftime(args.out_format)
             print(out_str)
         return 0
