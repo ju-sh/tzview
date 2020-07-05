@@ -30,7 +30,7 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument('to_tzs', nargs='+')
     parser.add_argument('--in-format', dest='in_format')
     parser.add_argument('--out-format', dest='out_format',
-                        default="+%I:%M %p, %d-%b-%Y")
+                        default="%I:%M %p, %d-%b-%Y")
     return parser
 
 

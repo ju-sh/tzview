@@ -47,16 +47,16 @@ class TestMain:
                             from_tz='local',
                             to_tzs=['Asia/Tokyo'],
                             in_format=None,
-                            out_format=None),
-         "16:04:56 12-Mar-2020: Asia/Tokyo\n"),
+                            out_format="%I:%M %p, %d-%b-%Y"),
+         "04:04 PM, 12-Mar-2020\n"),
 
         # Use in_format option
         (argparse.Namespace(dt='03-2020-12 21:23:42',
                             from_tz='Europe/Istanbul',
                             to_tzs=['Asia/Tokyo'],
                             in_format='%d-%Y-%m %M:%H:%S',
-                            out_format=None),
-         "05:21:42 04-Dec-2020: Asia/Tokyo\n"),
+                            out_format="%I:%M %p, %d-%b-%Y"),
+         "05:21 AM, 04-Dec-2020\n"),
 
         # Use out_format option #XXX: Use capsys fixture
         (argparse.Namespace(dt='03-2020-12 12:34:56',
@@ -78,14 +78,14 @@ class TestMain:
                            from_tz='locl',
                            to_tzs=['Asia/Tokyo'],
                            in_format=None,
-                           out_format=None),
+                           out_format="%I:%M %p, %d-%b-%Y"),
 
         # Invalid datetime
         argparse.Namespace(dt='2020-03-12 82:34:56',
                            from_tz='local',
                            to_tzs=['Asia/Tokyo'],
                            in_format=None,
-                           out_format=None)
+                           out_format="%I:%M %p, %d-%b-%Y")
     ])
     def test_invalid(self, args):
         assert tzview.app.main(args) == 1
