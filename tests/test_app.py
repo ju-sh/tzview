@@ -44,7 +44,7 @@ class TestMain:
     @pytest.mark.parametrize('args, expected_out', [
         # General
         (argparse.Namespace(dt='2020-03-12 12:34:56',
-                            from_tz='local',
+                            from_tz='Asia/Kolkata',
                             to_tzs=['Asia/Tokyo'],
                             in_format=None,
                             out_format="%I:%M %p, %d-%b-%Y"),
@@ -71,6 +71,14 @@ class TestMain:
         assert tzview.app.main(args) == 0
         captured = capsys.readouterr()
         assert captured.out == expected_out
+
+    def test_local_arg(self):
+        args = argparse.Namespace(dt='2020-03-12 12:34:56',
+                                  from_tz='local',
+                                  to_tzs=['Asia/Tokyo'],
+                                  in_format=None,
+                                  out_format="%I:%M %p, %d-%b-%Y")
+        assert tzview.app.main(args) == 0
 
     @pytest.mark.parametrize('args', [
         # Unknown time zone
