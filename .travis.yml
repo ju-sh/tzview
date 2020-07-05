@@ -18,7 +18,8 @@ jobs:
     - env: TESTENV=py38
 
     # PyPy3
-    - env: TESTENV=pypy3
+    - python: pypy3
+      env: TESTENV=pypy3
 
     # mypy
     - env: TESTENV=mypy

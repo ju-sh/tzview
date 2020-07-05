@@ -75,7 +75,7 @@ class TestParseTZ:
         """
         Test cases that should raise exception
         """
-        with pytest.raises(pytz.exceptions.UnknownTimeZoneError):
+        with pytest.raises(ValueError):  # raised by tzcity.tzcity()
             tzview.parse_tz(tz_str)
 
 

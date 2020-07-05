@@ -15,6 +15,7 @@ import tzlocal
 import pytz
 import pytz.exceptions
 import dateutil.parser
+import tzcity
 
 # Stuff for mypy
 # _pytz_tzinfo = Union[pytz.UTC.__class__,
@@ -53,7 +54,8 @@ def parse_tz(tz_str: str):
     tz_str = tz_str.strip().lower()
     if tz_str == 'local':
         return tzlocal.get_localzone()
-    return pytz.timezone(tz_str)
+    tz_name = tzcity.tzcity(tz_str)
+    return pytz.timezone(tz_name)
 
 
 def tzview(to_tz_strs: List[str],

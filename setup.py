@@ -7,7 +7,7 @@ setuptools.setup(
     name="tzview",
     version="0.2",
     author="Julin S",
-    author_email="julins@cannottellyou.yet",
+    author_email="",
     description="View datetime in different time zones.",
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -27,6 +27,6 @@ setuptools.setup(
         'Changelog': 'https://github.com/ju-sh/tzview/CHANGELOG.md',
         'Issue Tracker': 'https://github.com/ju-sh/tzview/issues',
     },
-    install_requires=['python-dateutil', 'pytz', 'tzlocal'],
+    install_requires=['python-dateutil', 'pytz', 'tzlocal', 'tzcity'],
     python_requires='>=3.6',
 )
