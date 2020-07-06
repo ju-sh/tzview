@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="tzview",
-    version="0.2",
+    version="0.3",
     author="Julin S",
     author_email="",
     description="View datetime in different time zones.",

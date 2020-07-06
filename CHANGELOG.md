@@ -1,3 +1,10 @@
+06-07-2020
+----------
+Version 0.3 released.
+
+ * Use tzcity module for limited city name to time zone name mapping.
+
+
 12-06-2020
 ----------
  * Add option `--in-format` to specify the format in which `--dt` is provided.
