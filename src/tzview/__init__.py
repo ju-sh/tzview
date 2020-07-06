@@ -90,6 +90,8 @@ def tzview(to_tz_strs: List[str],
 
     except pytz.exceptions.UnknownTimeZoneError as utze:
         raise ValueError(f"Unknown timezone: {utze.args[0]}")
+    except tzcity.UnknownTZCityException as utzce:
+        raise ValueError(f"Ambiguous or unknown time zone name: {utzce.citytz}")
     except ValueError:
         raise ValueError(f"Could not recognize format of datetime : {dt_str}!")
 

@@ -7,6 +7,7 @@ __author__ = "Julin S"
 
 import argparse
 import tzview
+import tzcity
 
 
 def create_parser() -> argparse.ArgumentParser:
@@ -30,7 +31,7 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument('to_tzs', nargs='+')
     parser.add_argument('--in-format', dest='in_format')
     parser.add_argument('--out-format', dest='out_format',
-                        default="%I:%M %p, %d-%b-%Y")
+                        default="%I:%M %p, %d-%b-%Y (%z)")
     return parser
 
 
@@ -48,7 +49,8 @@ def main(args: argparse.Namespace) -> int:
         print(ve.args[0])
         return 1
     else:
-        for to_dt in to_dts:
-            out_str = to_dt.strftime(args.out_format)
-            print(out_str)
+        for to_dt, to_tz in zip(to_dts, args.to_tzs):
+            out_dt_str = to_dt.strftime(args.out_format)
+            out_to_tz = tzcity.capitalize(to_tz)
+            print(f"{out_dt_str}: {out_to_tz}")
         return 0
