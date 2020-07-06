@@ -28,6 +28,8 @@ The string `'local'` can be used to specify the local time zone. This is the sou
 
 The string `'now'` can be used to specify the local datetime. This is the source datetime by default.
 
+In addition to the time zone names, tzview can also identify the time zone of a limited number of cities (Eg: Hanoi -> Asia/Ho\_Chi\_Minh).
+
 <h3>Command line usage</h3>
 
 To get the current time at Tokyo relative to your computer's current time and time zone, use
@@ -36,16 +38,18 @@ To get the current time at Tokyo relative to your computer's current time and ti
 
 to get something like
 
-    2020-05-24 09:16:05.281238+09:00 : Asia/Tokyo
+    09:47 PM, 06-Jul-2020 (+0900): Asia/Tokyo
 
 You could provide source datetime using `--dt` option and source time zone with `--from-tz` option. Like
 
-    python3 -m tzview --dt "2020-03-23 11:32:34" --from-tz Asia/Tokyo Europe/Oslo Asia/Istanbul
+    python3 -m tzview --dt "2020-03-23 11:32:34" --from-tz Asia/Tokyo Europe/Oslo Africa/Bamako
 
 to get an output like
 
-    2020-03-23 03:32:34+01:00 : Europe/Oslo
-    2020-03-23 05:32:34+03:00 : Asia/Istanbul
+    03:32 AM, 23-Mar-2020 (+0100): Europe/Oslo
+    02:32 AM, 23-Mar-2020 (+0000): Africa/Bamako
+
+The input and output datetime formats can be changed with options.
 
 Use `python3 -m tzview --help` for more.
 
@@ -58,18 +62,18 @@ Return value would be a list of timezone aware datetimes.
 For example,
 
     >>> from tzview import tzview
-    >>> t(['Europe/Oslo'])
+    >>> tzview(['Europe/Oslo'])  # Based on current time
     [datetime.datetime(2020, 5, 24, 12, 6, 14, 272335, tzinfo=<DstTzInfo 'Europe/Oslo' CEST+2:00:00 DST>)]
 
-    >>> t(['Europe/Athens', 'Asia/Singapore'])
-    [datetime.datetime(2020, 5, 24, 13, 11, 7, 32042, tzinfo=<DstTzInfo 'Europe/Athens' EEST+3:00:00 DST>), datetime.datetime(2020, 5, 24, 18, 11, 7, 32042, tzinfo=<DstTzInfo 'Asia/Singapore' +08+8:00:00 STD>)]
 
+    >>> tzview(['Europe/Athens', 'Asia/Singapore'], dt_str="2020-May-24 13:11:07", dt_format="%Y-%b-%d %H:%M:%S")
+    [datetime.datetime(2020, 5, 24, 10, 41, 7, tzinfo=<DstTzInfo 'Europe/Athens' EEST+3:00:00 DST>), datetime.datetime(2020, 5, 24, 15, 41, 7, tzinfo=<DstTzInfo 'Asia/Singapore' +08+8:00:00 STD>)]
 
 <h2>Why</h2>
 
-It is useful to figure meeting times when you got to attend meeting at a different time zone.
+It is useful to figure out the time when you got to attend meetings coordinated from a different time zone.
 
-Or when calling a friend at another timezone to figure out the time of the day there.
+Or when calling a friend at another timezone to know the time of the day there.
 
 That's what I use it for. :-)
 

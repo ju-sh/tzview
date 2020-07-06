@@ -54,8 +54,12 @@ def parse_tz(tz_str: str):
     tz_str = tz_str.strip().lower()
     if tz_str == 'local':
         return tzlocal.get_localzone()
-    tz_name = tzcity.tzcity(tz_str)
-    return pytz.timezone(tz_name)
+    try:
+        tz_rv = pytz.timezone(tz_str)
+    except pytz.exceptions.UnknownTimeZoneError:
+        tz_name = tzcity.tzcity(tz_str)
+        tz_rv = pytz.timezone(tz_name)
+    return tz_rv
 
 
 def tzview(to_tz_strs: List[str],
