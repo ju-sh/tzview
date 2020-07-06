@@ -41,16 +41,27 @@ def main(args: argparse.Namespace) -> int:
 
     Returns non-zero on error and zero on successful operation.
     """
+    no_exception = False
     try:
         # Call tzview
         to_dts = tzview.tzview(args.to_tzs, args.from_tz,
                                args.dt, args.in_format)
-    except ValueError as ve:
-        print(ve.args[0])
-        return 1
-    else:
         for to_dt, to_tz in zip(to_dts, args.to_tzs):
             out_dt_str = to_dt.strftime(args.out_format)
+            # if to_tz.lower() == 'local':
+            #     out_to_tz = tzview.parse_tz('local').zone
+            # else:
+            #     out_to_tz = tzcity.capitalize(to_tz)
             out_to_tz = tzcity.capitalize(to_tz)
             print(f"{out_dt_str}: {out_to_tz}")
+    except tzcity.UnknownTZCityException as utzce:
+        print(f"Ambiguous or unknown name: {utzce.citytz}")
+    except ValueError:
+        print(f"Unable to parse datetime: {args.dt}")
+    else:
+        # This part runs only if no exception occurred in try block
+        no_exception = True
+
+    if no_exception:
         return 0
+    return 1

@@ -73,26 +73,18 @@ def tzview(to_tz_strs: List[str],
     Returns list of tz aware converted datetimes.
     """
 
-    try:
-        # Find source timezone
-        from_tz = parse_tz(from_tz_str)
+    # Find source timezone
+    from_tz = parse_tz(from_tz_str)
 
-        # Find source datetime
-        dt = parse_dt(dt_str, dt_format)
-        from_dt = from_tz.localize(dt)
+    # Find source datetime
+    dt = parse_dt(dt_str, dt_format)
+    from_dt = from_tz.localize(dt)
 
-        # Find target timezone datetimes
-        to_dts = []
-        for to_tz_str in to_tz_strs:
-            to_tz = parse_tz(to_tz_str)
-            to_dt = from_dt.astimezone(to_tz)
-            to_dts.append(to_dt)
-
-    except pytz.exceptions.UnknownTimeZoneError as utze:
-        raise ValueError(f"Unknown timezone: {utze.args[0]}")
-    except tzcity.UnknownTZCityException as utzce:
-        raise ValueError(f"Ambiguous or unknown time zone name: {utzce.citytz}")
-    except ValueError:
-        raise ValueError(f"Could not recognize format of datetime : {dt_str}!")
+    # Find target timezone datetimes
+    to_dts = []
+    for to_tz_str in to_tz_strs:
+        to_tz = parse_tz(to_tz_str)
+        to_dt = from_dt.astimezone(to_tz)
+        to_dts.append(to_dt)
 
     return to_dts

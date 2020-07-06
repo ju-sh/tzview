@@ -58,7 +58,6 @@ class TestMain:
                             out_format="%I:%M %p, %d-%b-%Y (%z)"),
          "05:21 AM, 04-Dec-2020 (+0900): Asia/Tokyo\n"),
 
-        # Use out_format option #XXX: Use capsys fixture
         (argparse.Namespace(dt='03-2020-12 12:34:56',
                             from_tz='Europe/Istanbul',
                             to_tzs=['Asia/Tokyo', 'Europe/Oslo'],
