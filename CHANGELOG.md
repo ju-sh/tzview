@@ -1,3 +1,8 @@
+07-07-2020
+----------
+ * Allow pytz to recognzie tz name in `parse_tz()` before `tzcity()`
+ * Add bumpversion
+
 06-07-2020
 ----------
 Version 0.3 released.
