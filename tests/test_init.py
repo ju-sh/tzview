@@ -10,6 +10,7 @@ import tzlocal
 import tzcity
 
 import tzview
+import tzview.core
 
 
 class TestParseDT:
@@ -28,14 +29,14 @@ class TestParseDT:
         """
         Normal valid test cases
         """
-        assert tzview.parse_dt(dt_str, dt_format) == expected
+        assert tzview.core.parse_dt(dt_str, dt_format) == expected
 
     def test_valid_now(self):
         """
         Valid test case when dt value is 'now'
         """
         now = datetime.datetime.now()
-        rv = tzview.parse_dt("now")
+        rv = tzview.core.parse_dt("now")
         assert now-rv <= datetime.timedelta(seconds=2)
 
     @pytest.mark.parametrize('dt_str', [
@@ -46,7 +47,7 @@ class TestParseDT:
         Test cases that should raise exception
         """
         with pytest.raises(ValueError):
-            tzview.parse_dt(dt_str)
+            tzview.core.parse_dt(dt_str)
 
 
 class TestParseTZ:
@@ -59,14 +60,14 @@ class TestParseTZ:
         """
         Normal valid test cases
         """
-        assert tzview.parse_tz(tz_str) == expected
+        assert tzview.core.parse_tz(tz_str) == expected
 
     def test_valid_local(self):
         """
         Valid test case when tz_str value is 'local'
         """
         local = tzlocal.get_localzone()
-        rv = tzview.parse_tz("local")
+        rv = tzview.core.parse_tz("local")
         assert local.zone == rv.zone
 
     @pytest.mark.parametrize('tz_str', [
@@ -77,7 +78,7 @@ class TestParseTZ:
         Test cases that should raise exception
         """
         with pytest.raises(tzcity.UnknownTZCityException):
-            tzview.parse_tz(tz_str)
+            tzview.core.parse_tz(tz_str)
 
 
 class TestTZView:

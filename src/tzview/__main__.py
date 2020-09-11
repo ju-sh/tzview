@@ -3,9 +3,9 @@ __main__.py for tzview
 """
 
 import sys
-import tzview.app
+import tzview.cli
 
 if __name__ == '__main__':
-    parser = tzview.app.create_parser()
+    parser = tzview.cli.create_parser()
     args = parser.parse_args()
-    sys.exit(tzview.app.main(args))
+    sys.exit(tzview.cli.main(args))

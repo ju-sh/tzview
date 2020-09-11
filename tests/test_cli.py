@@ -6,7 +6,7 @@ import argparse
 
 import pytest
 
-import tzview.app
+import tzview.cli
 
 
 @pytest.fixture
@@ -14,7 +14,7 @@ def parser():
     """
     Fixture returning an argparse.ArgumentParser
     """
-    return tzview.app.create_parser()
+    return tzview.cli.create_parser()
 
 
 class TestCreateParser:
@@ -67,7 +67,7 @@ class TestMain:
 
     ])
     def test_main(self, capsys, args, expected_out):
-        assert tzview.app.main(args) == 0
+        assert tzview.cli.main(args) == 0
         captured = capsys.readouterr()
         assert captured.out == expected_out
 
@@ -77,7 +77,7 @@ class TestMain:
                                   to_tzs=['Asia/Tokyo'],
                                   in_format=None,
                                   out_format="%I:%M %p, %d-%b-%Y (%z)")
-        assert tzview.app.main(args) == 0
+        assert tzview.cli.main(args) == 0
 
     def test_local_tz(self):
         args = argparse.Namespace(dt='2020-03-12 12:34:56',
@@ -85,7 +85,7 @@ class TestMain:
                                   to_tzs=['Asia/Tokyo'],
                                   in_format=None,
                                   out_format="%I:%M %p, %d-%b-%Y (%z)")
-        assert tzview.app.main(args) == 0
+        assert tzview.cli.main(args) == 0
 
     @pytest.mark.parametrize('args', [
         # Unknown time zone
@@ -103,4 +103,4 @@ class TestMain:
                            out_format="%I:%M %p, %d-%b-%Y (%z)")
     ])
     def test_invalid(self, args):
-        assert tzview.app.main(args) == 1
+        assert tzview.cli.main(args) == 1

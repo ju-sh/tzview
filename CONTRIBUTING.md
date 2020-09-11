@@ -4,7 +4,7 @@ Pull requests are welcome!
 
 You can also help by opening an issue if you find any bug.
 
-This package uses the following for development:
+In addtion to those in [requirements.txt](requirements.txt) This package uses the following for development:
 
 | Package         | Purpose              |
 | -------         | -------              |
