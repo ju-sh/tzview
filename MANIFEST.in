@@ -1,0 +1,21 @@
+graft tests
+
+include LICENSE.md
+include CONTRIBUTING.md
+include CHANGELOG.md
+include Makefile
+include tox.ini
+include requirements.txt
+include .pylintrc
+include mypy.ini
+include whitelist.py
+include CONTRIBUTING.md
+include requirements.txt
+include requirements-dev.txt
+include .coveragerc
+
+exclude .bumpversion.cfg
+
+prune .github
+
+global-exclude __pycache__ *.pyc *.pyo

@@ -1,5 +1,5 @@
 """
-Test cases for code in src/tzview/__init__.py
+Test cases for code in src/tzview/core.py
 """
 
 import datetime

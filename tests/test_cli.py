@@ -64,7 +64,6 @@ class TestMain:
                             in_format="%d-%Y-%m %H:%M:%S",
                             out_format='%H:%M'),
          "18:34: Asia/Tokyo\n10:34: Europe/Oslo\n"),
-
     ])
     def test_main(self, capsys, args, expected_out):
         assert tzview.cli.main(args) == 0
@@ -91,7 +90,7 @@ class TestMain:
         # Unknown time zone
         argparse.Namespace(dt='2020-03-12 12:34:56',
                            from_tz='locl',
-                           to_tzs=['Asia/Tokyo'],
+                           to_tzs=['Asia/Dhaka'],
                            in_format=None,
                            out_format="%I:%M %p, %d-%b-%Y (%z)"),
 

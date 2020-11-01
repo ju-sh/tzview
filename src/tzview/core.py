@@ -15,8 +15,6 @@ import tzlocal
 import pytz
 import pytz.exceptions
 import dateutil.parser
-#import dateparser
-import pendulum
 import tzcity
 
 
@@ -31,13 +29,12 @@ def parse_dt(dt_str: str, dt_format: str = None) -> datetime.datetime:
     """
     dt_str = dt_str.strip().lower()
     if dt_str == 'now':
-        dt = datetime.datetime.now()
+        dtime = datetime.datetime.now()
     elif dt_format is not None:  # if a format is provided, use it
-        dt = datetime.datetime.strptime(dt_str, dt_format)
+        dtime = datetime.datetime.strptime(dt_str, dt_format)
     else:
-        dt = dateutil.parser.parse(dt_str)
-        #dt = pendulum.parse(dt_str, strict=False)
-    return dt
+        dtime = dateutil.parser.parse(dt_str)
+    return dtime
 
 
 def parse_tz(tz_str: str):
@@ -79,8 +76,8 @@ def tzview(to_tz_strs: List[str],
     from_tz = parse_tz(from_tz_str)
 
     # Find source datetime
-    dt = parse_dt(dt_str, dt_format)
-    from_dt = from_tz.localize(dt)
+    dtime = parse_dt(dt_str, dt_format)
+    from_dt = from_tz.localize(dtime)
 
     # Find target timezone datetimes
     to_dts = []
