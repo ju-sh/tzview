@@ -11,7 +11,7 @@ local means current timezone
 from typing import List
 import datetime
 
-from tzcity.abbrs import TZ_ABBRS
+from tzview.abbrs import TZ_ABBRS
 import tzcity
 import tzlocal
 import pytz
@@ -96,17 +96,22 @@ def find_tz_dtime(tz_str: str,
     tz_str = tz_str.strip().lower()
 
     try:
+        utcoffset_secs = None
         # For UTC offsets
         if tz_str.startswith("utc"):
-            utcoffset_sec = _get_utcoffset(tz_str[3:])
+            utcoffset_secs = _get_utcoffset(tz_str[3:])
 
         # For recognized unambiguous time zone abbreviation
-        elif from_tz_str in TZ_ABBRS:
-            utcoffset_secs = TZ_ABBRS[from_tz_str]
+        elif tz_str in TZ_ABBRS:
+            utcoffset_secs = TZ_ABBRS[tz_str]
 
-        utctz = pytz.timezone("Europe/London")
-        utcdt = utctz.localize(dtime)
-        return utcdt + datetime.timedelta(seconds=utcoffset_secs)
+        if utcoffset_secs is not None:
+            utctz = pytz.timezone("Europe/London")
+            if dtime.tzinfo is None:
+                utcdt = utctz.localize(dtime)
+            else:
+                utcdt = dtime.astimezone(utctz)
+            return utcdt + datetime.timedelta(seconds=utcoffset_secs)
     except ValueError:
         pass
 
@@ -117,7 +122,9 @@ def find_tz_dtime(tz_str: str,
         else:
             # For standard time zone names
             target_tz = pytz.timezone(tz_str)
-        return target_tz.localize(dtime)
+        if dtime.tzinfo is None:
+            return target_tz.localize(dtime)
+        return dtime.astimezone(target_tz)
     except pytz.exceptions.UnknownTimeZoneError:
         pass
     
@@ -125,7 +132,9 @@ def find_tz_dtime(tz_str: str,
     try:
         tz_name = tzcity.tzcity(tz_str)
         target_tz = pytz.timezone(tz_name)
-        return target_tz.localize(dtime)
+        if dtime.tzinfo is None:
+            return target_tz.localize(dtime)
+        return dtime.astimezone(target_tz)
     except pytz.exceptions.UnknownTimeZoneError as utze:
         raise ValueError("{tz_str}: ambiguous or unknown name") from utze
 
@@ -151,18 +160,12 @@ def tzview(to_tz_strs: List[str],
     from_dt = parse_dt(dt_str, dt_format)
     from_dt = find_tz_dtime(from_tz_str, from_dt)
 
-    # Find source timezone
-    from_tz = parse_tz(from_tz_str)
-
-    # Find source datetime
-    dtime = parse_dt(dt_str, dt_format)
-    from_dt = from_tz.localize(dtime)
-
     # Find target timezone datetimes
     to_dts = []
     for to_tz_str in to_tz_strs:
-        to_tz = parse_tz(to_tz_str)
-        to_dt = from_dt.astimezone(to_tz)
+        #to_tz = parse_tz(to_tz_str)
+        #to_dt = from_dt.astimezone(to_tz)
+        to_dt = find_tz_dtime(to_tz_str, from_dt)
         to_dts.append(to_dt)
 
     return to_dts

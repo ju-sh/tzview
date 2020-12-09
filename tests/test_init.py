@@ -50,24 +50,24 @@ class TestParseDT:
             tzview.core.parse_dt(dt_str)
 
 
-class TestParseTZ:
-    @pytest.mark.parametrize('tz_str, expected', [
-        ("local", tzlocal.get_localzone()),
+class TestFindTZDtime
+    @pytest.mark.parametrize('tz_str,dtime,expected', [
+        #XXX:monkeypatch tzlocal.get_localzone()# ("local", tzlocal.get_localzone()),
         ("Europe/Oslo", pytz.timezone("Europe/Oslo")),
         ("Asia/Kuala_Lumpur", pytz.timezone("Asia/Kuala_Lumpur")),
     ])
-    def test_valid(self, tz_str, expected):
+    def test_valid(self, tz_str, dtime, expected):
         """
         Normal valid test cases
         """
-        assert tzview.core.parse_tz(tz_str) == expected
+        assert tzview.core.find_tz_dtime(tz_str) == expected
 
     def test_valid_local(self):
         """
         Valid test case when tz_str value is 'local'
         """
         local = tzlocal.get_localzone()
-        rv = tzview.core.parse_tz("local")
+        rv = tzview.core.find_tz_dtime("local")
         assert local.zone == rv.zone
 
     @pytest.mark.parametrize('tz_str', [
@@ -78,7 +78,7 @@ class TestParseTZ:
         Test cases that should raise exception
         """
         with pytest.raises(tzcity.UnknownTZCityException):
-            tzview.core.parse_tz(tz_str)
+            tzview.core.find_tz_dtime(tz_str)
 
 
 class TestTZView:
