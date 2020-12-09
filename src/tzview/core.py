@@ -11,11 +11,56 @@ local means current timezone
 from typing import List
 import datetime
 
+from tzcity.abbrs import TZ_ABBRS
 import tzlocal
 import pytz
 import pytz.exceptions
 import dateutil.parser
 import tzcity
+
+
+def _get_utcoffset(offset_str: str) -> int:
+    """
+    Return UTC offset in seconds
+    """
+    # Flag variable
+    found = False
+
+    if offset_str in TZ_ABBRS:
+        hours = TZ_ABBRS[offset_str][0]
+        minutes = TZ_ABBRS[offset_str][1]
+        found = True
+
+    #XXX: Combine all 3 regexs
+    # For UTC+02
+    mobj = re.match(r"^[+-]?\d\d$", offset_str)
+    if mobj:
+        hours = int(mobj.group(0))
+        minutes = 0
+        found = True
+
+    # For UTC+02:30
+    if not found:
+        mobj = re.match(r"^([+-]?\d\d):(\d\d)$", offset_str)
+        if mobj:
+            hours = int(mobj.group(1))
+            minutes = int(mobj.group(2))
+            found = True
+
+    # For UTC+0230
+    if not found:
+        mobj = re.match(r"^([+-]?\d\d)(\d\d)$", offset_str)
+        if mobj:
+            hours = int(mobj.group(1))
+            minutes = int(mobj.group(2))
+            found = True
+
+    if not found:
+        return ValueError("Unknown format")
+
+    if (hours < -12) or (hours > 14) or (minutes > 59):
+       raise ValueError(f"{offset_str}: invalid offset")
+    return (hours * 3600) + (minutes * 60)
 
 
 def parse_dt(dt_str: str, dt_format: str = None) -> datetime.datetime:
@@ -74,7 +119,6 @@ def tzview(to_tz_strs: List[str],
 
     Returns list of tz aware converted datetimes.
     """
-
     # Find source timezone
     from_tz = parse_tz(from_tz_str)
 
