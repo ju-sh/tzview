@@ -2,8 +2,6 @@
 Command line interface for tzview.
 """
 
-__author__ = "Julin S"
-
 import argparse
 import tzcity
 import tzview
@@ -12,9 +10,10 @@ from tzview.version import __version__
 
 def create_parser() -> argparse.ArgumentParser:
     """
-    Create the parser for the cli.
+    Create a parser to parse the arguments provided to the CLI.
 
-    Returns the parser object.
+    Returns:
+      The parser to parse CLI arguments.
     """
     parser = argparse.ArgumentParser(
         prog="tzview",
@@ -39,7 +38,8 @@ def main(args: argparse.Namespace) -> int:
     """
     The main function for the CLI.
 
-    Returns non-zero on error and zero on successful operation.
+    Returns:
+      Non-zero on error and zero on successful operation.
     """
     try:
         # Call tzview
@@ -47,8 +47,9 @@ def main(args: argparse.Namespace) -> int:
                                args.dt, args.in_format)
         for to_dt, to_tz in zip(to_dts, args.to_tzs):
             out_dt_str = to_dt.strftime(args.out_format)
-            out_to_tz = tzcity.capitalize(to_tz)
-            print(f"{out_dt_str}: {out_to_tz}")
+            #out_to_tz = tzcity.capitalize(to_tz)
+            #print(f"{out_dt_str}: {out_to_tz}")
+            print(f"{out_dt_str}: {to_tz}")
     except ValueError as verr:
         print(verr)
         return 1
