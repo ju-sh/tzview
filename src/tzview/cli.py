@@ -31,7 +31,7 @@ def create_parser() -> argparse.ArgumentParser:
     parser.add_argument('to_tzs', nargs='+')
     parser.add_argument('--in-format', dest='in_format')
     parser.add_argument('--out-format', dest='out_format',
-                        default="%I:%M %p, %d-%b-%Y (%z)")
+                        default="%I:%M %p, %a, %d-%b-%Y (%z)")
     return parser
 
 
@@ -45,17 +45,12 @@ def main(args: argparse.Namespace) -> int:
         # Call tzview
         to_dts = tzview.tzview(args.to_tzs, args.from_tz,
                                args.dt, args.in_format)
-    except ValueError:
-        print(f"{args.dt}: Unable to parse datetime")
-        return 1
-
-    for to_dt, to_tz in zip(to_dts, args.to_tzs):
-        try:
+        for to_dt, to_tz in zip(to_dts, args.to_tzs):
             out_dt_str = to_dt.strftime(args.out_format)
             out_to_tz = tzcity.capitalize(to_tz)
             print(f"{out_dt_str}: {out_to_tz}")
-        except ValueError:
-            print(f"{to_tz}: ambiguous or unknown name")
-            return 1
+    except ValueError as verr:
+        print(verr)
+        return 1
 
     return 0

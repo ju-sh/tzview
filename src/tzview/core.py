@@ -50,11 +50,14 @@ def parse_tz(tz_str: str):
     if tz_str == 'local':
         return tzlocal.get_localzone()
     try:
-        tz_rv = pytz.timezone(tz_str)
+        return pytz.timezone(tz_str)
     except pytz.exceptions.UnknownTimeZoneError:
+        pass
+    try:
         tz_name = tzcity.tzcity(tz_str)
-        tz_rv = pytz.timezone(tz_name)
-    return tz_rv
+        return pytz.timezone(tz_name)
+    except pytz.exceptions.UnknownTimeZoneError as utze:
+        raise ValueError("{tz_str}: ambiguous or unknown name") from utze
 
 
 def tzview(to_tz_strs: List[str],
